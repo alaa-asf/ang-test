@@ -1,0 +1,291 @@
+<div class="container-xl">
+  <div class="table-responsive">
+    <div class="table-wrapper">
+      <div class="table-title">
+        <div class="row">
+          <div class="col-sm-6">
+            <h2>Manage <b>Employees</b></h2>
+          </div>
+          <div class="col-sm-6">
+            <button
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#addEmployeeModal"
+              class="btn btn-success btn-lg"
+              data-toggle="modal"
+            >
+              New
+            </button>
+            <button
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteEmployeeModal"
+              class="btn btn-danger btn-lg"
+              data-toggle="modal"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th scope="col">
+              <span class="custom-checkbox">
+                <input type="checkbox" id="selectAll" (change)="selectAll($event)" />
+                <label for="selectAll"></label>
+              </span>
+            </th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Address</th>
+            <th scope="col">Phone</th>
+            <th scope="col" style="width: auto">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let employee of allEmplyees
+                | paginate
+                  : {
+                      id: 'listing_pagination',
+                      itemsPerPage: 10,
+                      currentPage: pageNum,
+                      totalItems: numberOfEmp
+                    }
+            "
+          >
+            <td>
+              <span class="custom-checkbox">
+                <input
+                (change)="elementMarkedForDelete($event,employee.id)"
+                    [checked]="deleteArray.includes(employee.id)"
+                  type="checkbox"
+                  [id]="employee.id"
+                />
+                <label [for]="employee.id"></label>
+              </span>
+            </td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.address }}</td>
+            <td>{{ employee.phone }}</td>
+            <td>
+              <button
+                style="display: inline"
+                class="btn"
+                (click)="deleteEmp(employee)"
+              >
+                <i class="bi bi-trash" style="color: red"></i>
+              </button>
+              <button
+                (click)="onEdit(employee)"
+                style="display: inline"
+                class="btn"
+                data-bs-toggle="modal"
+                data-bs-target="#editEmployeeModal"
+              >
+                <i class="bi bi-pencil" style="color: orangered"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="hint-text">
+        Showing <b>10</b> out of <b>{{ allEmplyees.length }}</b> entries
+      </div>
+      <div class="clearfix" style="text-align: right;">
+        <pagination-controls
+          id="listing_pagination"
+          (pageChange)="pageNum = $event"
+        ></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Modal HTML -->
+<div id="addEmployeeModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="formValue">
+        <div class="modal-header">
+          <h4 class="modal-title">Add Employee</h4>
+          <button
+            type="button"
+            class="close"
+            data-bs-dismiss="modal"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              formControlName="name"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              formControlName="email"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <textarea
+              class="form-control"
+              formControlName="address"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input
+              type="text"
+              formControlName="phone"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            id="cancel"
+            class="btn btn-default"
+            data-bs-dismiss="modal"
+            #closeButton
+          >
+            Cancel
+          </button>
+          <button type="button" (click)="newEmp()" class="btn btn-success">
+            Add
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal HTML -->
+<div id="editEmployeeModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="formValue">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Employee</h4>
+          <button
+            type="button"
+            class="close"
+            data-bs-dismiss="modal"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              formControlName="name"
+              type="text"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input
+              formControlName="email"
+              type="email"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <textarea
+              formControlName="address"
+              class="form-control"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input
+              formControlName="phone"
+              type="text"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            id="cancel"
+            class="btn btn-default"
+            data-bs-dismiss="modal"
+            #closeButton2
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-success"
+            (click)="updateEmp()"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal HTML -->
+
+<div id="deleteEmployeeModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Delete Employee</h4>
+          <button
+            type="button"
+            class="close"
+            data-bs-dismiss="modal"
+            aria-hidden="true"
+            #closeButton3
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete these Records?</p>
+          <p class="text-warning">
+            <small>This action cannot be undone.</small>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <input
+            type="button"
+            class="btn btn-default"
+            data-bs-dismiss="modal"
+            value="Cancel"
+          />
+          <button type="button" class="btn btn-danger" (click)="deleteSelected()">Delete</button>
+        </div>
+    </div>
+  </div>
+</div>

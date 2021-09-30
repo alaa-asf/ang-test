@@ -1,0 +1,64 @@
+<div class="container" style="background-color: papayawhip">
+  <div style="margin-bottom: 15px; display: inline">
+    <img
+      style="float: left; margin-bottom: 15px"
+      width="100"
+      src="../../assets/money-exchange-icon.jpg"
+      class="img-thumbnail"
+    />
+    <span> <h1>Currency Exchange App</h1></span>
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">$</span>
+    </div>
+    <input
+      (input)="convert()"
+      [(ngModel)]="fromUsdEl"
+      type="number"
+      min="0"
+      class="form-control"
+      aria-label="Amount (to the nearest dollar)"
+    />
+    <div class="input-group-append">
+      <span class="input-group-text">.00</span>
+    </div>
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">€</span>
+    </div>
+    <input
+      (input)="convert2()"
+      [(ngModel)]="toEur"
+      type="number"
+      min="0"
+      class="form-control"
+      aria-label="Amount (to the nearest dollar)"
+    />
+    <div class="input-group-append">
+      <span class="input-group-text">.00</span>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-6" style="float: left; text-align: left;">
+        <h5>From USD to EUR:</h5>
+        <p>Bid Price: {{ bidPrice }}</p>
+        <p>Ask Price: {{ askPrice }}</p>
+        <p>exchangeRate: {{ exchangeRate }}</p>
+      </div>
+      <div class="col-6" style="float: right; text-align: right;">
+        <h5>From EUR to USD:</h5>
+        <div>
+          
+        </div>
+        <p>Bid Price: {{ bidPrice2 }}</p>
+        <p>Ask Price: {{ askPrice2 }}</p>
+        <p>exchangeRate: {{ exchangeRate2 }}</p>
+      </div>
+    </div>
+  </div>
+</div>

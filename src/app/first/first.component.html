@@ -1,0 +1,22 @@
+<div class="container">
+  <div>
+    <h3><b>Draw Multi Axis Chart</b></h3>
+    <br>
+  </div>
+  <p-chart
+    width="80vw"
+    height="80vh"
+    type="line"
+    [data]="data"
+    [options]="multiAxisOptions"
+  ></p-chart>
+  <div>
+    <br>
+    <h1>Meta Data:</h1>
+    <ul type="none">
+      <li *ngFor="let option of allData">
+        {{ option }}
+      </li>
+    </ul>
+  </div>
+</div>
